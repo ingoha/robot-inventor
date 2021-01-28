@@ -23,14 +23,18 @@ class MVP:
         self._neutral = self._steering.get_position()
         print("neutral %d" % (self._neutral))
 
+    # projects an angle into 0-359
+    def sanitize_angle(self, degrees):
+        return (degrees + 360) % 360
+
     def steer_left(self, degrees = 90):
-        self._steering.run_to_position(self._neutral + degrees, 35)
+        self._steering.run_to_position(self.sanitize_angle(self._neutral + degrees), 'shortest path')
 
     def steer_right(self, degrees = 90):
-        self._steering.run_for_degrees(self._neutral - degrees, 35)
+        self._steering.run_to_position(self.sanitize_angle(self._neutral - degrees), 'shortest path')
 
     def steer_straight(self):
-        self._steering.run_to_position(self._neutral, 'shortest path', 35)
+        self._steering.run_to_position(self._neutral, 'shortest path')
 
     # positive value for rotation drives forward
     def drive(self, rotations):
