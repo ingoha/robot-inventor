@@ -27,6 +27,7 @@ async def run_animation(frames, clear=False, delay=500, loop=True, fade=4):
         
 # Write your program here.
 mshub.status_light.on('red')
+hub.display.clear()
 hub.display.rotation(90)
 anim=run_animation(animation_scanning)
 while True:
