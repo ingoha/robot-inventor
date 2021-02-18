@@ -1,7 +1,6 @@
 from mindstorms import MSHub
 import hub
-from time import sleep
-
+import time
 
 # Create your objects here.
 mshub = MSHub()
@@ -15,13 +14,15 @@ animation_scanning = ['00000:00000:56789:00000:00000',
                         '00000:00000:78932:00000:00000',
                         '00000:00000:67891:00000:00000']
 
-async def run_animation(frames, clear=False, delay=500, loop=True, fade=4):
+def run_animation(frames, clear=False, delay_ms=500, loop=True, fade=4):
     while True:
         for f in frames:
+            start_time_ms = time.ticks_us()
             img = hub.Image(f)
             hub.display.show(img)
-            sleep(delay/1000)
-            yield
+            while((time.ticks_us() - start_time_ms) / 1000 < delay_ms):
+                #print((time.ticks_us() - start_time_us) * 1000)
+                yield
         if not loop:
             return
         
@@ -34,6 +35,7 @@ while True:
     try:
         anim.send(None)
         # do something else...
+        #print('yield')
     except StopIteration as e:
         print('animation finished')
         break
