@@ -73,6 +73,7 @@ anim=run_animation(animation_scanning)
 #move=run_move()
 move=chest_motor.run_for_degrees(500)
 while True:
+    # FIXME this should become an event loop...
     try:
         anim.send(None)
         # do something else...
