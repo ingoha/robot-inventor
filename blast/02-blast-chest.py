@@ -37,6 +37,7 @@ async def run_move():
 
 # Write your program here.
 mshub.status_light.on('red')
+hub.display.clear()
 hub.display.rotation(90)
 anim=run_animation(animation_scanning)
 move=run_move()
