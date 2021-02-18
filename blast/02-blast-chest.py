@@ -1,7 +1,7 @@
 from mindstorms import MSHub, Motor
 import hub
 import time
-from time import sleep
+import sys
 
 # Create your objects here.
 mshub = MSHub()
@@ -86,4 +86,5 @@ while True:
         print('move finished')
         # FIXME stops animation as well...
         break
-    
+
+sys.exit()
