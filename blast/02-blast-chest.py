@@ -65,21 +65,11 @@ def run_animation(frames, clear=False, delay_ms=500, loop=True, fade=4):
 				if not loop:
 						return
 			
-async def run_move():
-		# FIXME make motor movement async...
-		chest_motor.run_for_degrees(500)
-		yield
-		chest_motor.run_for_degrees(-1000)
-		yield
-		chest_motor.run_for_degrees(500)
-		return
-
 # Write your program here.
 mshub.status_light.on('red')
 hub.display.rotation(90)
 hub.sound.play('/extra_files/Scanning')
 anim=[run_animation(animation_scanning)]
-#move=run_move()
 move=[chest_motor.run_for_degrees(500),chest_motor.run_for_degrees(-1000),chest_motor.run_for_degrees(500)]
 threads=[anim,move]
 # fill thread array
@@ -89,6 +79,8 @@ active_threads = 2
 while True:
 	for i, t in enumerate(threads):
 		step = threads_stepcounter[i]
+		if step == -1:
+			continue
 		try:
 			t[step].send(None)
 		except StopIteration as e:
@@ -97,7 +89,7 @@ while True:
 			if step < len(t) - 1:
 				threads_stepcounter[i] += 1
 			else:
-				# FIXME: what if there are threads that should run forever???
+				threads_stepcounter[i] = -1
 				active_threads -= 1
 				print('active threads: ', str(active_threads))
 				if active_threads == 0:
