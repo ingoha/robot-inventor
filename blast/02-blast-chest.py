@@ -77,6 +77,7 @@ async def run_move():
 # Write your program here.
 mshub.status_light.on('red')
 hub.display.rotation(90)
+hub.sound.play('/extra_files/Scanning')
 anim=[run_animation(animation_scanning)]
 #move=run_move()
 move=[chest_motor.run_for_degrees(500),chest_motor.run_for_degrees(-1000),chest_motor.run_for_degrees(500)]
