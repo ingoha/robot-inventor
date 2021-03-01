@@ -29,18 +29,18 @@ class MotorAsync:
 		def __init__(self, port):
 				self.motor = Motor(port)
 				
-		def run_for_degrees(self, degrees):
+		def run_for_degrees(self, degrees, speed=75):
 				direction = 1
 				if(degrees < 0):
 						direction = -1
 				
 				# default speed is 75...
-				speed = direction * 20
+				_speed = direction * speed
 
 				self.motor.set_degrees_counted(0)
 
 				# start motor at speed +/-20
-				self.motor.set_default_speed(speed)
+				self.motor.set_default_speed(_speed)
 				self.motor.start()
 				while True:
 						if(direction * ((self.motor.get_degrees_counted()) - degrees) < 0):
