@@ -37,9 +37,11 @@ class MotorAsync:
 				start_degrees_counted = self.motor.get_degrees_counted()
 
 				while True:
-						if (time.ticks_us() - start_time_ms) / 1000 < timeout_ms:
+						_delta_t_ms = (time.ticks_us() - start_time_ms) / 1000
+						if (_delta_t_ms > timeout_ms):
 								break
-						elif (self.motor.get_degrees_counted() - start_degrees_counted < 2):
+						elif (_delta_t_ms > 100 and self.motor.get_speed() == 0):
+								print ('no more movement')
 								break
 						else:
 								yield
@@ -97,7 +99,7 @@ mshub.status_light.on('red')
 hub.display.rotation(90)
 hub.sound.play('/extra_files/Scanning')
 anim=[run_animation(animation_scanning)]
-move=[calibrate]
+move=[calibrate()]
 threads=[anim,move]
 # fill thread array
 threads_stepcounter=[0,0]
