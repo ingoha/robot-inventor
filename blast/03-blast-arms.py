@@ -81,6 +81,11 @@ def calibrate():
 						yield
 				except StopIteration as e:
 						break
+		
+		# TODO: run back until yaw=42
+
+		return
+
 
 def run_animation(frames, clear=False, delay_ms=500, loop=True, fade=4):
 		while True:
