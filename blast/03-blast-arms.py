@@ -1,4 +1,5 @@
 from mindstorms import MSHub, Motor
+from util.sensors import get_sensor_value, is_type
 import hub
 import time
 import sys
@@ -45,14 +46,12 @@ def calibrate():
 		chest_motor.pwm(0)
 		# start counting delta yaw
 		start_yaw = hub.motion.position()[0]
-		print(start_yaw)
 		start_time_ms = time.ticks_us()
 		# run motor back until delta yaw=42 (timeout 2000)
 		chest_motor.run_at_speed(37)
 		while True:
 				_delta_t_ms = (time.ticks_us() - start_time_ms) / 1000
 				_delta_yaw = abs((hub.motion.position()[0] - start_yaw))
-				print(_delta_yaw)
 				if (_delta_t_ms > 2000):
 						break
 				elif (_delta_yaw >= 42):
@@ -69,8 +68,13 @@ for frame in animation_scanning:
     img = hub.Image(frame)
     anim.append(img)
 
+hub.display.show(anim, wait=False, clear=False, delay=200, loop=True, fade=2)
 calibrate()
-
-hub.display.show(anim, wait=False, loop=True)
+chest_motor.run_for_degrees(648,speed=75)
+# init sensor
+port_f = getattr(hub.port, "F", None)
+if getattr(port_f, "device", None) and is_type("F", 62):
+		# turn on lights
+		port_f.device.mode(5, b''+chr(9)+chr(9)+chr(9)+chr(9))
 
 sys.exit()
