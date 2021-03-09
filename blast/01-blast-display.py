@@ -30,13 +30,19 @@ def run_animation(frames, clear=False, delay_ms=500, loop=True, fade=4):
 mshub.status_light.on('red')
 hub.display.clear()
 hub.display.rotation(90)
-anim=run_animation(animation_scanning)
-while True:
-    try:
-        anim.send(None)
-        # do something else...
-        #print('yield')
-    except StopIteration as e:
-        print('animation finished')
-        break
+#anim=run_animation(animation_scanning)
+anim=[]
+for frame in animation_scanning:
+    img = hub.Image(frame)
+    anim.append(img)
+
+hub.display.show(anim)
+#while True:
+#    try:
+#        anim.send(None)
+#        # do something else...
+#        #print('yield')
+#    except StopIteration as e:
+#        print('animation finished')
+#        break
     
