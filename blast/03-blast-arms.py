@@ -76,5 +76,14 @@ port_f = getattr(hub.port, "F", None)
 if getattr(port_f, "device", None) and is_type("F", 62):
 		# turn on lights
 		port_f.device.mode(5, b''+chr(9)+chr(9)+chr(9)+chr(9))
+while True:
+    sensor_value = get_sensor_value("F", 0, 200, (62,))
+    if sensor_value is None:
+    	  sensor_value = 200
+    elif sensor_value < 10:
+        break
+
+hub.sound.play("/extra_files/Target Acquired")
+chest_motor.run_for_degrees(648,speed=-75)
 
 sys.exit()
