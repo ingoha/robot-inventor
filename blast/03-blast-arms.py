@@ -34,18 +34,30 @@ def calibrate():
 		while True:
 				# cf. https://github.com/maarten-pennings/Lego-Mindstorms/blob/main/ms4/faq.md#what-is-motorget
 				speed = chest_motor.get()[0]
-
 				_delta_t_ms = (time.ticks_us() - start_time_ms) / 1000
+				# check timeout
 				if (_delta_t_ms > 3000):
 						break
-				elif (_delta_t_ms > 100 and speed == 0):
-						print ('no more movement')
+				# 300ms after motor start, check if speed has dropped (=end position)
+				elif (_delta_t_ms > 300 and speed >= -50):
 						break
 		# stop motor
 		chest_motor.pwm(0)
 		# start counting delta yaw
-		# run motor back until delta yaw=42
-		
+		start_yaw = hub.motion.position()[0]
+		print(start_yaw)
+		start_time_ms = time.ticks_us()
+		# run motor back until delta yaw=42 (timeout 2000)
+		chest_motor.run_at_speed(37)
+		while True:
+				_delta_t_ms = (time.ticks_us() - start_time_ms) / 1000
+				_delta_yaw = abs((hub.motion.position()[0] - start_yaw))
+				print(_delta_yaw)
+				if (_delta_t_ms > 2000):
+						break
+				elif (_delta_yaw >= 42):
+						break
+		chest_motor.pwm(0)
 		return
 
 # Write your program here.
